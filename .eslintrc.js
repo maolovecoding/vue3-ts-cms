@@ -27,6 +27,9 @@ module.exports = {
     // 使用any类型 不发生警告
     "@typescript-eslint/no-explicit-any": "OFF",
     // 允许参数使用any类型
-    "@typescript-eslint/explicit-module-boundary-types": "OFF"
+    "@typescript-eslint/explicit-module-boundary-types": "OFF",
+    // 允许定义变量未使用
+    "@typescript-eslint/no-unused-vars": "OFF",
+    "vue/no-mutating-props": "OFF"
   }
 };
