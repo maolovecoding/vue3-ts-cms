@@ -1,12 +1,14 @@
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import type { RootState, StoreType } from "./type";
 import login from "./login";
+import { system } from "./main";
 const store = createStore<RootState>({
   state: {},
   mutations: {},
   actions: {},
   modules: {
-    login
+    login,
+    system
   }
 });
 /**

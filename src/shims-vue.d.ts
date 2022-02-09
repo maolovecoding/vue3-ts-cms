@@ -5,3 +5,5 @@ declare module "*.vue" {
   // vue文件导出的组件实例
   export default component;
 }
+// 过滤器
+declare const $filters: { formatTime: (time: string) => string };

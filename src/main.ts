@@ -6,10 +6,14 @@ import router from "./router";
 import store from "./store";
 import "./assets/css/index.less";
 import { setupStore } from "./store";
+import { formatTime } from "@/utils";
 
 setupStore();
-createApp(App)
-  // ep国际化 采用中文
+const app = createApp(App);
+// 配置一个全局过滤器对象 可以包含多个过滤器
+app.config.globalProperties.$filters = { formatTime };
+// ep国际化 采用中文
+app
   .use(ElementPlus, {
     locale: zhCn
   })

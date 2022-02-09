@@ -1,2 +1,3 @@
 import { Account } from "./login";
-export { Account };
+import { QueryInfo, PageQueryInfo } from "./system";
+export { Account, QueryInfo, PageQueryInfo };

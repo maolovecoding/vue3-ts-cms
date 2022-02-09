@@ -11,7 +11,7 @@ export default defineComponent({
   name: "Chat",
   setup() {
     return {};
-  },
+  }
 });
 </script>
 

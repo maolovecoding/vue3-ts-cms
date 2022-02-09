@@ -11,7 +11,7 @@ export default defineComponent({
   name: "Dashboard",
   setup() {
     return {};
-  },
+  }
 });
 </script>
 

@@ -69,3 +69,65 @@ export interface UserMenus {
   sort: number;
   children: Child[];
 }
+
+export interface User {
+  id: number;
+  name: string;
+  realname: string;
+  cellphone: any;
+  enable: number;
+  departmentId: number;
+  roleId: number;
+  createAt: Date;
+  updateAt: Date;
+}
+
+export interface UserListType {
+  list: User[];
+  totalCount: number;
+}
+
+// role
+export interface RoleChild2 {
+  id: number;
+  url?: any;
+  name: string;
+  sort?: any;
+  type: number;
+  parentId: number;
+  permission: string;
+}
+
+export interface RoleChild1 {
+  id: number;
+  url: string;
+  name: string;
+  sort: number;
+  type: number;
+  children: RoleChild2[];
+  parentId: number;
+}
+
+export interface RoleMenuList {
+  id: number;
+  name: string;
+  type: number;
+  url: string;
+  icon: string;
+  sort: number;
+  children: RoleChild1[];
+}
+
+export interface RoleType {
+  id: number;
+  name: string;
+  intro: string;
+  createAt: Date;
+  updateAt: Date;
+  menuList: RoleMenuList[];
+}
+
+export interface RoleListType {
+  list: RoleType[];
+  totalCount: number;
+}

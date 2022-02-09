@@ -11,7 +11,7 @@ export default defineComponent({
   name: "Goods",
   setup() {
     return {};
-  },
+  }
 });
 </script>
 
