@@ -4,12 +4,14 @@
       <template #header>
         <h1>高级检索</h1>
       </template>
-      <template #footer="{ formRef }">
+      <template #footer>
         <div class="handle-btns">
-          <el-button type="info" :icon="Refresh" @click="handleReset(formRef)"
+          <el-button type="info" :icon="Refresh" @click="handleReset"
             >重置</el-button
           >
-          <el-button type="primary" :icon="Search">搜索</el-button>
+          <el-button type="primary" :icon="Search" @click="handleQueryClick"
+            >搜索</el-button
+          >
         </div>
       </template>
     </MaoForm>
@@ -19,7 +21,6 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { Refresh, Search } from "@element-plus/icons-vue";
-import type { ElForm } from "element-plus";
 import { MaoForm } from "@/base";
 
 export default defineComponent({
@@ -30,7 +31,8 @@ export default defineComponent({
     }
   },
   components: { MaoForm },
-  setup(props) {
+  emits: ["resetBtnClick", "queryBtnClick"],
+  setup(props, { emit }) {
     // const formRef = ref<InstanceType<typeof ElForm>>();
     const formItems = ref(props.searchFormConfig.formItems);
     const originFormData: any = {};
@@ -41,14 +43,18 @@ export default defineComponent({
     // 双向绑定的数据名称，是从表单配置的field字段决定的
     const formData = ref({ ...originFormData });
     // 重置点击
-    const handleReset = (form: InstanceType<typeof ElForm> | undefined) => {
-      console.log(formData);
-      form?.resetFields();
-      console.log(form);
-      formData.value = { ...originFormData };
-      console.log(formData);
+    const handleReset = () => {
+      // TODO 因为内部是对表单的数据进行了浅拷贝 所以实际上是需要重置每个表单项的数据
+      for (const key in originFormData) {
+        formData.value[key] = originFormData[key];
+      }
+      emit("resetBtnClick");
     };
-    return { formData, Refresh, Search, handleReset };
+    // 搜索
+    const handleQueryClick = () => {
+      emit("queryBtnClick", formData.value);
+    };
+    return { formData, Refresh, Search, handleReset, handleQueryClick };
   }
 });
 </script>

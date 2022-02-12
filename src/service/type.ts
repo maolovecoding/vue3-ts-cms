@@ -40,7 +40,7 @@ export interface UserInfo {
   department: Department;
 }
 
-export interface Child2 {
+export interface UserMenusChildChild {
   id: number;
   url?: any;
   name: string;
@@ -50,13 +50,13 @@ export interface Child2 {
   permission: string;
 }
 
-export interface Child {
+export interface UserMenusChild {
   id: number;
   url: string;
   name: string;
   sort: number;
   type: number;
-  children: Child2[];
+  children: UserMenusChildChild[];
   parentId: number;
 }
 
@@ -67,7 +67,7 @@ export interface UserMenus {
   url: string;
   icon: string;
   sort: number;
-  children: Child[];
+  children: UserMenusChild[];
 }
 
 export interface User {
@@ -129,5 +129,28 @@ export interface RoleType {
 
 export interface RoleListType {
   list: RoleType[];
+  totalCount: number;
+}
+
+// goods
+export interface GoodsType {
+  id: number;
+  name: string;
+  oldPrice: string;
+  newPrice: string;
+  desc: string;
+  status: number;
+  imgUrl: string;
+  inventoryCount: number;
+  saleCount: number;
+  favorCount: number;
+  address: string;
+  categoryId: number;
+  createAt: Date;
+  updateAt: Date;
+}
+
+export interface GoodsListType {
+  list: GoodsListType[];
   totalCount: number;
 }

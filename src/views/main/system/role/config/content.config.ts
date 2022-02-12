@@ -20,7 +20,7 @@ const propListConfig = [
   },
   {
     label: "操作",
-    minWidth: "160px",
+    minWidth: "180px",
     slotName: "operation"
   }
 ];

@@ -1,6 +1,6 @@
 import { BreadcrumbType } from "@/base";
 import { RouteRecordRaw } from "vue-router";
-import { UserMenus } from "./../service/type";
+import { UserMenus, UserMenusChildChild } from "./../service/type";
 /**
  * 将用户菜单映射为 路由
  * @param userMenus 菜单
@@ -64,4 +64,23 @@ export function pathMapBreadcrumbs(
   const breadcrumbs: BreadcrumbType[] = [];
   pathMapToMenu(userMenus, currentPath, breadcrumbs);
   return breadcrumbs;
+}
+/**
+ *
+ * @param userMenus
+ * @returns
+ */
+export function mapMenuToPermissions(userMenus: UserMenus[]) {
+  const permissions: string[] = [];
+  const _getPermission = (menus: UserMenus[]) => {
+    for (const menu of menus) {
+      if (menu.type === 1 || menu.type === 2) {
+        _getPermission((menu.children as any) ?? []);
+      } else if (menu.type === 3) {
+        permissions.push((menu as any as UserMenusChildChild).permission);
+      }
+    }
+  };
+  _getPermission(userMenus);
+  return permissions;
 }

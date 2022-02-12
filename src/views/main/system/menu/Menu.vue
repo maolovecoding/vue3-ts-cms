@@ -1,18 +1,16 @@
 <template>
   <div class="menu">
-    <h2>menu</h2>
+    <PageContent
+      :page-name="pageName"
+      :content-table-config="pageContentConfig"
+    />
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
-
-export default defineComponent({
-  name: "Menu",
-  setup() {
-    return {};
-  }
-});
+<script lang="ts" setup>
+import PageContent from "@/components/page-content";
+import pageContentConfig from "./config/content.config";
+const pageName = "menu";
 </script>
 
 <style scoped></style>

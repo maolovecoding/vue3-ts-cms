@@ -1,18 +1,25 @@
-import { UserInfo, UserMenus, User, RoleType } from "@/service/type";
+import { UserInfo, UserMenus, User, RoleType, GoodsType } from "@/service/type";
 
 export interface RootState {
-  account?: string;
+  entireDepartment: any[];
+  entireRole: any[];
 }
 export interface LoginState {
   token: string;
   userInfo: UserInfo;
   userMenus: UserMenus[];
+  // 按钮权限
+  permission: string[];
 }
 export interface SystemState {
   userList: User[];
   userCount: number;
   roleList: RoleType[];
   roleCount: number;
+  goodsList: GoodsType[];
+  goodsCount: number;
+  menuList: any[];
+  menuCount: number;
 }
 export interface RootWithModuleType {
   login: LoginState;

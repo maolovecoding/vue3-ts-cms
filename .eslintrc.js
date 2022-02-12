@@ -30,6 +30,8 @@ module.exports = {
     "@typescript-eslint/explicit-module-boundary-types": "OFF",
     // 允许定义变量未使用
     "@typescript-eslint/no-unused-vars": "OFF",
-    "vue/no-mutating-props": "OFF"
+    "vue/no-mutating-props": "OFF",
+    // 忽略断言
+    "@typescript-eslint/no-non-null-assertion": "OFF"
   }
 };

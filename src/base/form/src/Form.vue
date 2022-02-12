@@ -12,7 +12,13 @@
       <el-row>
         <template v-for="item in formItems" :key="item.label">
           <el-col v-bind="colLayout">
-            <el-form-item :label="item.label" :style="itemStyle">
+            <!-- 特殊属性 需要隐藏 -->
+            <el-form-item
+              v-if="!item.isHidden"
+              :rules="item.rules"
+              :label="item.label"
+              :style="itemStyle"
+            >
               <template
                 v-if="item.type === 'input' || item.type === 'password'"
               >
@@ -50,14 +56,13 @@
       </el-row>
     </el-form>
     <div class="footer">
-      <slot name="footer" :formRef="formRef"></slot>
+      <slot name="footer"></slot>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref, watch, reactive } from "vue";
-import type { ElForm } from "element-plus";
+import { defineComponent, PropType, ref, watch } from "vue";
 import { FormItem } from "../types";
 export default defineComponent({
   props: {
@@ -92,22 +97,14 @@ export default defineComponent({
   },
   emits: ["update:formData"],
   setup(props, { emit }) {
-    const formRef = ref<InstanceType<typeof ElForm>>();
     // 拷贝一份需要双向绑定的数据
     const formdata = ref({ ...props.formData });
-    // watch(
-    //   () => props.formData,
-    //   (newVal) => {
-    //     formdata.value = { ...newVal };
-    //   }
-    // );
     // TODO 真正的组件双向数据绑定 监听数据的改变 并发送出去给父组件 newVal 就是 formdata对象
     watch(formdata, (newVal) => emit("update:formData", newVal), {
       deep: true
     });
     return {
-      formdata,
-      formRef
+      formdata
     };
   }
 });

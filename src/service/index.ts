@@ -8,7 +8,7 @@ export default new Request({
   interceptors: {
     requestInterceptor(config) {
       // 携带token
-      config!.headers!.Authorization = `Bearer ${localCache.getCache<string>(
+      config.headers!.Authorization = `Bearer ${localCache.getCache<string>(
         "token"
       )}`;
       return config;

@@ -9,11 +9,13 @@ export interface FormItem {
   options?: OptionType[];
   // 日期组件 配置 参考ep
   datePickerOptions?: datePickerOptionType;
+  // 特殊属性 比如 password 等 是否隐藏
+  isHidden?: Boolean;
 }
 
 interface OptionType {
   title: string;
-  value: string;
+  value: any;
 }
 
 interface datePickerOptionType {
@@ -37,4 +39,5 @@ interface Layout {
   md?: number;
   sm?: number;
   xs?: number;
+  span?: number;
 }

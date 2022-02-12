@@ -12,6 +12,7 @@
     border
     style="width: 100%"
     @selection-change="handleSelectChange"
+    v-bind="childrenProps"
   >
     <el-table-column
       v-if="showSelectColumn"
@@ -27,7 +28,7 @@
       align="center"
     ></el-table-column>
     <template v-for="item in propList" :key="item.prop">
-      <el-table-column v-bind="item" align="center">
+      <el-table-column v-bind="item" align="center" show-overflow-tooltip>
         <template #default="scope">
           <!-- 动态插槽名 -->
           <slot :row="scope.row" :name="item.slotName">{{
@@ -35,24 +36,23 @@
           }}</slot>
         </template>
       </el-table-column>
-      <div class="footer">
-        <slot name="footer">
-          <!-- <el-pagination
-            v-model:currentPage="currentPage1"
-            :page-size="100"
-            :small="small"
-            :disabled="disabled"
-            :background="background"
-            layout="total, prev, pager, next"
-            :total="1000"
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-          >
-          </el-pagination> -->
-        </slot>
-      </div>
     </template>
   </el-table>
+  <div class="footer">
+    <slot name="footer">
+      <el-pagination
+        :currentPage="page.currentPage"
+        :page-size="page.pageSize"
+        :page-sizes="[5, 10, 20, 30]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="dataTotalCount"
+        hide-on-single-page
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      >
+      </el-pagination>
+    </slot>
+  </div>
 </template>
 
 <script lang="ts">
@@ -62,6 +62,10 @@ export default defineComponent({
   props: {
     listData: {
       type: Array as PropType<User[]>,
+      required: true
+    },
+    dataTotalCount: {
+      type: Number,
       required: true
     },
     propList: {
@@ -79,15 +83,29 @@ export default defineComponent({
     title: {
       type: String,
       default: "默认标题"
+    },
+    page: {
+      type: Object as any,
+      required: true
+    },
+    childrenProps: {
+      type: Object as any,
+      default: () => ({})
     }
   },
-  emits: ["selectionChange"],
+  emits: ["selectionChange", "update:page"],
   setup(props, { emit }) {
     // 选中行的数据 回调参数是选中的行的数据 默认是数组形式
     const handleSelectChange = (selection: User[]) => {
       emit("selectionChange", selection);
     };
-    return { handleSelectChange };
+    const handleSizeChange = (pageSize: number) => {
+      emit("update:page", { ...props.page, pageSize });
+    };
+    const handleCurrentChange = (currentPage: number) => {
+      emit("update:page", { ...props.page, currentPage });
+    };
+    return { handleSelectChange, handleSizeChange, handleCurrentChange };
   }
 });
 </script>
@@ -97,5 +115,10 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+}
+.footer {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 20px;
 }
 </style>

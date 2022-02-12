@@ -1,4 +1,4 @@
-import { mapMenusToRoutes } from "@/utils";
+import { mapMenusToRoutes, mapMenuToPermissions } from "@/utils";
 import { UserMenus } from "./../../service/type";
 import type { Module } from "vuex";
 import type { RootState, LoginState } from "../type";
@@ -16,7 +16,8 @@ const loginModule: Module<LoginState, RootState> = {
   state: {
     userInfo: {} as UserInfo,
     token: "",
-    userMenus: [] as UserMenus[]
+    userMenus: [] as UserMenus[],
+    permission: []
   },
   mutations: {
     changeToken(state, token: string) {
@@ -30,6 +31,8 @@ const loginModule: Module<LoginState, RootState> = {
       // 动态注册路由 根据菜单生成
       const routes = mapMenusToRoutes(userMenus);
       routes.forEach((route) => router.addRoute("main", route));
+      // 获取菜单权限
+      state.permission = mapMenuToPermissions(userMenus);
     }
   },
   actions: {
