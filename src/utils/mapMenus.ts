@@ -1,6 +1,6 @@
 import { BreadcrumbType } from "@/base";
 import { RouteRecordRaw } from "vue-router";
-import { UserMenus, UserMenusChildChild } from "./../service/type";
+import { UserMenus, UserMenusChildChild, RoleMenuList } from "@/service/type";
 /**
  * 将用户菜单映射为 路由
  * @param userMenus 菜单
@@ -83,4 +83,22 @@ export function mapMenuToPermissions(userMenus: UserMenus[]) {
   };
   _getPermission(userMenus);
   return permissions;
+}
+/**
+ * 获取权限菜单的叶子节点 在tree控件展示时使用
+ * @param menuList
+ */
+export function getMenuLeafKeys(menuList: RoleMenuList[]) {
+  const leafKeys: number[] = [];
+  function getLeafKeys(menuList: RoleMenuList[]) {
+    for (const menu of menuList) {
+      if (menu.children) {
+        getLeafKeys(menu.children as any);
+      } else {
+        leafKeys.push(menu.id);
+      }
+    }
+  }
+  getLeafKeys(menuList);
+  return leafKeys;
 }

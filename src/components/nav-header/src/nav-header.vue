@@ -13,7 +13,9 @@
         </span>
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item @click="handleExitClick"
+              >退出登录</el-dropdown-item
+            >
             <el-dropdown-item divided>用户信息</el-dropdown-item>
             <el-dropdown-item>系统信息</el-dropdown-item>
           </el-dropdown-menu>
@@ -26,11 +28,11 @@
 <script lang="ts">
 import { defineComponent, ref, computed } from "vue";
 import { Fold, Expand } from "@element-plus/icons-vue";
-import { useRoute } from "vue-router";
-import { Breadcrumb } from "../../../base";
-import type { BreadcrumbType } from "../../../base";
-import { useStore } from "../../../store";
-import { pathMapBreadcrumbs } from "../../../utils";
+import { useRoute, useRouter } from "vue-router";
+import { Breadcrumb } from "@/base";
+import type { BreadcrumbType } from "@/base";
+import { useStore } from "@/store";
+import { localCache, pathMapBreadcrumbs } from "@/utils";
 export default defineComponent({
   components: {
     Breadcrumb,
@@ -40,7 +42,7 @@ export default defineComponent({
   emits: ["foldChange"],
   setup(props, { emit }) {
     const store = useStore();
-    const router = useRoute();
+    const routes = useRoute();
     const username = computed<string>(() => store.state.login.userInfo.name);
     const avatarUrl =
       "http://p1.music.126.net/UPq43R_bOnvmADDjjwMjmw==/109951163505490394.jpg?param=180y180";
@@ -53,9 +55,22 @@ export default defineComponent({
     };
     // 面包屑
     const breadcrumbs = computed<BreadcrumbType[]>(() =>
-      pathMapBreadcrumbs(store.state.login.userMenus, router.path)
+      pathMapBreadcrumbs(store.state.login.userMenus, routes.path)
     );
-    return { username, avatarUrl, isFoldMenu, handleFoldMenu, breadcrumbs };
+    // 退出登录
+    const router = useRouter(); // TODO 获取路由对象必须在setup中执行一下
+    const handleExitClick = () => {
+      localCache.deleteCache("token");
+      router.push("/main");
+    };
+    return {
+      username,
+      avatarUrl,
+      isFoldMenu,
+      handleFoldMenu,
+      breadcrumbs,
+      handleExitClick
+    };
   }
 });
 </script>

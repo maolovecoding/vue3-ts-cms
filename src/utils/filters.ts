@@ -20,7 +20,7 @@ export function formatUtcTime(
   utcTime: string,
   format: string = DATA_FORMAT_DEFAULT
 ) {
-  return dayjs.utc(utcTime).format(format);
+  return dayjs.utc(utcTime).utcOffset(8).format(format);
 }
 
 export function formatTimestamp(

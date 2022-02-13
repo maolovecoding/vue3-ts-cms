@@ -2,11 +2,12 @@ import { getPageListData } from "@/service/main/system/system";
 import { createStore, Store, useStore as vuexUseStore } from "vuex";
 import type { RootState, StoreType } from "./type";
 import login from "./login";
-import { system } from "./main";
+import { system, dashboard } from "./main";
 const store = createStore<RootState>({
   state: {
     entireDepartment: [],
-    entireRole: []
+    entireRole: [],
+    entireMenu: []
   },
   mutations: {
     changeEntireDepartment(state, entireDepartment: any[]) {
@@ -14,6 +15,9 @@ const store = createStore<RootState>({
     },
     changeEntireRole(state, entireRole: any[]) {
       state.entireRole = entireRole;
+    },
+    changeEntireMenu(state, entireMenu: any[]) {
+      state.entireMenu = entireMenu;
     }
   },
   actions: {
@@ -34,14 +38,17 @@ const store = createStore<RootState>({
         offset: 0,
         size: 1000
       });
-      console.log(departmentResult.list, roleResult.list);
+      // 请求权限菜单数据
+      const { data: menuResult } = await getPageListData("/menu/list");
       commit("changeEntireDepartment", departmentResult.list);
       commit("changeEntireRole", roleResult.list);
+      commit("changeEntireMenu", menuResult.list);
     }
   },
   modules: {
     login,
-    system
+    system,
+    dashboard
   }
 });
 /**
@@ -49,7 +56,7 @@ const store = createStore<RootState>({
  */
 export function setupStore() {
   store.dispatch("login/loadLocalLogin");
-  store.dispatch("getInitialDataAction");
+  // store.dispatch("getInitialDataAction");
 }
 
 export function useStore(): Store<StoreType> {

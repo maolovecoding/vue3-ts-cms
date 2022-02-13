@@ -4,8 +4,8 @@ type CallbackType = () => void;
 export function usePageModal<T>(): any;
 export function usePageModal<T>(newCallback: CallbackType): any;
 export function usePageModal<T>(
-  newCallback: CallbackType,
-  editCallback: CallbackType
+  newCallback: CallbackType | undefined,
+  editCallback: (args?: any) => void
 ): any;
 /**
  *
@@ -15,9 +15,10 @@ export function usePageModal<T>(
  */
 export function usePageModal<T>(
   newCallback?: CallbackType,
-  editCallback?: CallbackType
+  editCallback?: (args?: any) => void
 ) {
   const pageModelRef = ref<InstanceType<typeof PageModel>>();
+  // dialog显示的数据对象
   const defaultInfo = ref<T>();
   // 新建
   const handleNewData = () => {
@@ -30,7 +31,7 @@ export function usePageModal<T>(
   const handleEditData = (item: T) => {
     defaultInfo.value = { ...item };
     if (pageModelRef.value) pageModelRef.value.isVisible = true;
-    editCallback && editCallback();
+    editCallback && editCallback(item);
   };
   return [pageModelRef, defaultInfo, handleNewData, handleEditData] as const;
 }

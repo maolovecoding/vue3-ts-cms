@@ -53,6 +53,7 @@ export class LocalCache {
     return res as T;
   }
   deleteCache(key: string): void;
+  deleteCache(key: string, localOrSessionStorage: boolean): void;
   deleteCache(key: string, localOrSessionStorage = true): void {
     if (localOrSessionStorage) window.localStorage.removeItem(key);
     else window.sessionStorage.removeItem(key);

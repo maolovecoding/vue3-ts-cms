@@ -41,13 +41,15 @@ const loginModule: Module<LoginState, RootState> = {
      * @param commit
      * @param account
      */
-    async accountLoginAction({ commit }, account: Account) {
+    async accountLoginAction({ commit, dispatch }, account: Account) {
       const { data: res } = await accountLoginRequest(account);
       console.log(res);
       const { id, token } = res;
       // 保存token
       commit("changeToken", token);
       localCache.setCache("token", token);
+      // 发起请求获取角色和部门数据
+      dispatch("getInitialDataAction", null, { root: true });
       // 获取 userInfo
       const { data: userInfo } = await requestUserInfoById(id);
       console.log(userInfo);
@@ -67,9 +69,13 @@ const loginModule: Module<LoginState, RootState> = {
      * 刷新页面时 加载缓存数据到vuex中
      * @param param0
      */
-    loadLocalLogin({ commit }) {
+    loadLocalLogin({ commit, dispatch }) {
       const token = localCache.getCache<string>("token");
-      token && commit("changeToken", token);
+      if (token) {
+        commit("changeToken", token);
+        // 发起请求获取角色和部门数据
+        dispatch("getInitialDataAction", null, { root: true });
+      }
       const userInfo = localCache.getCache<UserInfo>("userInfo");
       userInfo && commit("changeUserInfo", userInfo);
       const userMenus = localCache.getCache<UserMenus[]>("userMenus");
